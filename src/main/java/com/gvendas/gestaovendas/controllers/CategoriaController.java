@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,11 @@ public class CategoriaController {
 	public ResponseEntity<Categoria> save(@RequestBody Categoria categoria) throws URISyntaxException {
 		Categoria newCategoria = service.save(categoria);
 		return ResponseEntity.created(new URI("/categoria/" + newCategoria.getCodigo())).body(newCategoria);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria) {
+		return ResponseEntity.ok(service.update(id, categoria));
 	}
 
 }
