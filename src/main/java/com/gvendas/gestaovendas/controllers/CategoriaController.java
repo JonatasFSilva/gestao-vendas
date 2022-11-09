@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gvendas.gestaovendas.entities.Categoria;
 import com.gvendas.gestaovendas.services.CategoriaService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Categoria")
 @RestController
 @RequestMapping("/categoria")
 public class CategoriaController {
@@ -27,11 +31,13 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService service;
 
+	@ApiOperation(value = "Listar todas as Categorias")
 	@GetMapping
 	public List<Categoria> findAll() {
 		return service.findAll();
 	}
 
+	@ApiOperation(value = "Listar Categorias pelo ID")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long id) {
 		Optional<Categoria> categoria = service.findById(id);
@@ -41,12 +47,14 @@ public class CategoriaController {
 		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 	}
 
+	@ApiOperation(value = "Salvar uma nova Categoria")
 	@PostMapping
 	public ResponseEntity<Categoria> save(@Valid @RequestBody Categoria categoria) throws URISyntaxException {
 		Categoria newCategoria = service.save(categoria);
 		return ResponseEntity.created(new URI("/categoria/" + newCategoria.getCodigo())).body(newCategoria);
 	}
 
+	@ApiOperation(value = "Atualizar uma Categoria pelo ID")
 	@PutMapping("/{id}")
 	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
 		return ResponseEntity.ok(service.update(id, categoria));
