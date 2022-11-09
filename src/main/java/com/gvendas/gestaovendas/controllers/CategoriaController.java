@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,13 +42,13 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Categoria> save(@RequestBody Categoria categoria) throws URISyntaxException {
+	public ResponseEntity<Categoria> save(@Valid @RequestBody Categoria categoria) throws URISyntaxException {
 		Categoria newCategoria = service.save(categoria);
 		return ResponseEntity.created(new URI("/categoria/" + newCategoria.getCodigo())).body(newCategoria);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria) {
+	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
 		return ResponseEntity.ok(service.update(id, categoria));
 	}
 
