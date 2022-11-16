@@ -3,9 +3,12 @@ package com.gvendas.gestaovendas.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +45,7 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Salva um Produto", nickname = "saveProduct")
 	@PostMapping
-	public ResponseEntity<Produto> save(@RequestBody Produto produto) {
+	public ResponseEntity<Produto> save(@Valid @RequestBody Produto produto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
 	}
 

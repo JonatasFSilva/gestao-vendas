@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private static final String CONSTANT_VALIDATION_LENGTH = "Length";
+	private static final String CONSTANT_VALIDATION_NOT_NULL = "NotNull";
 	private static final String CONSTANT_VALIDATION_NOT_BLANK = "NotBlank";
 
 	@Override
@@ -48,8 +49,8 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 		List<Error> errors = Arrays.asList(new Error(msgUser, msgDev));
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 
-	}	
-	
+	}
+
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
 			WebRequest request) {
@@ -59,8 +60,6 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 
 	}
-	
-
 
 	// METODOS INTERNOS DE EXECUCAO E TRATAMENTOS
 	private List<Error> gerarListErrors(BindingResult bindingResult) {
@@ -76,6 +75,9 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 
 	private String handleMessageUser(FieldError fieldError) {
 		if (fieldError.getCode().equals(CONSTANT_VALIDATION_NOT_BLANK)) {
+			return fieldError.getDefaultMessage().concat(" é obrigatório.");
+		}
+		if (fieldError.getCode().equals(CONSTANT_VALIDATION_NOT_NULL)) {
 			return fieldError.getDefaultMessage().concat(" é obrigatório.");
 		}
 		if (fieldError.getCode().equals(CONSTANT_VALIDATION_LENGTH)) {
