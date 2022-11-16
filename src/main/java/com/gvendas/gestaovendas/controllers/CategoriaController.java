@@ -50,7 +50,7 @@ public class CategoriaController {
 		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 	}
 
-	@ApiOperation(value = "Salva uma nova Categoria", nickname = "save category")
+	@ApiOperation(value = "Salva uma nova Categoria", nickname = "saveCategory")
 	@PostMapping
 	public ResponseEntity<Categoria> save(@Valid @RequestBody Categoria categoria) throws URISyntaxException {
 		Categoria newCategoria = service.save(categoria);

@@ -40,7 +40,7 @@ public class ProdutoController {
 		return produto.isPresent() ? ResponseEntity.ok(produto) : ResponseEntity.notFound().build();
 	}
 
-	@ApiOperation(value = "Salva um Produto", nickname = "save product")
+	@ApiOperation(value = "Salva um Produto", nickname = "saveProduct")
 	@PostMapping
 	public ResponseEntity<Produto> save(@RequestBody Produto produto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
