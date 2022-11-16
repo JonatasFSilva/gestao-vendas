@@ -43,6 +43,7 @@ public class CategoriaService {
 		repository.deleteById(id);
 	}
 
+	
 	private Categoria validarCategoriaExiste(Long id) {
 		Optional<Categoria> categoria = findById(id);
 
