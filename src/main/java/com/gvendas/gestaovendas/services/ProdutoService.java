@@ -37,8 +37,10 @@ public class ProdutoService {
 
 	public Produto update(Long codigoCategoria, Long codigoProduto, Produto produto) {
 		Produto produtoAtualizar = validarProdutoExiste(codigoProduto, codigoCategoria);
+		validarCategoruaDoProdutoExiste(codigoCategoria);
+		validarProdutoDuplicado(produto);
 		BeanUtils.copyProperties(produto, produtoAtualizar, "codigo");
-		validarProdutoDuplicado()))))))))))))))))))
+		
 		return produtoRepository.save(produtoAtualizar);
 	}
 
