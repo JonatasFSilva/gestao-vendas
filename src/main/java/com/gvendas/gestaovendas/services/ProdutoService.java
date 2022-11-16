@@ -3,7 +3,9 @@ package com.gvendas.gestaovendas.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.gvendas.gestaovendas.entities.Produto;
@@ -31,6 +33,22 @@ public class ProdutoService {
 		validarCategoruaDoProdutoExiste(produto.getCategoria().getCodigo());
 		validarProdutoDuplicado(produto);
 		return produtoRepository.save(produto);
+	}
+
+	public Produto update(Long codigoCategoria, Long codigoProduto, Produto produto) {
+		Produto produtoAtualizar = validarProdutoExiste(codigoProduto, codigoCategoria);
+		BeanUtils.copyProperties(produto, produtoAtualizar, "codigo");
+		validarProdutoDuplicado()))))))))))))))))))
+		return produtoRepository.save(produtoAtualizar);
+	}
+
+	private Produto validarProdutoExiste(Long codigoProduto, Long codigoCategoria) {
+		Optional<Produto> produto = buscarPorCodigo(codigoProduto, codigoCategoria);
+
+		if (produto.isEmpty()) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		return produto.get();
 	}
 
 	private void validarCategoruaDoProdutoExiste(Long codigoCategoria) {
