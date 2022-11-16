@@ -18,19 +18,19 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Produto")
 @RestController
-@RequestMapping("/categoria{codigoCategoria}/produto")
+@RequestMapping("/categoria/{codigoCategoria}/produto")
 public class ProdutoController {
 
 	@Autowired
 	ProdutoService produtoService;
 
-	@ApiOperation(value = "Lista todos os Produtos por Categoria" , nickname = "")
+	@ApiOperation(value = "Lista todos os Produtos por Categoria" , nickname = "findAll")
 	@GetMapping
 	public List<Produto> findAll(@PathVariable Long codigoCategoria) {
 		return produtoService.findAll(codigoCategoria);
 	}
 
-	@ApiOperation(value = "Lista o Produto por Codigo" , nickname = "")
+	@ApiOperation(value = "Lista o Produto por Codigo" , nickname = "findById")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Optional<Produto>> findById(@PathVariable Long codigoCategoria, @PathVariable Long codigo) {
 		Optional<Produto> produto = produtoService.buscarPorCodigo(codigoCategoria, codigo);

@@ -34,13 +34,13 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService service;
 
-	@ApiOperation(value = "Lista todas as Categorias", nickname = "")
+	@ApiOperation(value = "Lista todas as Categorias", nickname = "findAll")
 	@GetMapping
 	public List<Categoria> findAll() {
 		return service.findAll();
 	}
 
-	@ApiOperation(value = "Lista uma Categoria pelo ID", nickname = "")
+	@ApiOperation(value = "Lista uma Categoria pelo ID", nickname = "findById")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long id) {
 		Optional<Categoria> categoria = service.findById(id);
@@ -50,20 +50,20 @@ public class CategoriaController {
 		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 	}
 
-	@ApiOperation(value = "Salva uma nova Categoria", nickname = "")
+	@ApiOperation(value = "Salva uma nova Categoria", nickname = "save")
 	@PostMapping
 	public ResponseEntity<Categoria> save(@Valid @RequestBody Categoria categoria) throws URISyntaxException {
 		Categoria newCategoria = service.save(categoria);
 		return ResponseEntity.created(new URI("/categoria/" + newCategoria.getCodigo())).body(newCategoria);
 	}
 
-	@ApiOperation(value = "Atualiza uma Categoria pelo ID", nickname = "")
+	@ApiOperation(value = "Atualiza uma Categoria pelo ID", nickname = "updateById")
 	@PutMapping("/{id}")
 	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
 		return ResponseEntity.ok(service.update(id, categoria));
 	}
 
-	@ApiOperation(value = "Deleta uma Categoria", nickname = "")
+	@ApiOperation(value = "Deleta uma Categoria", nickname = "delete")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {

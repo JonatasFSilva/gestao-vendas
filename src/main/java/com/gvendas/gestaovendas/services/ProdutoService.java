@@ -19,8 +19,8 @@ public class ProdutoService {
 		return produtoRepository.findByCategoriaCodigo(codigotCategoria);
 	}
 
-	public Optional<Produto> buscarPorCodigo(Long codigo, Long codigoCategoria) {
-		return produtoRepository.buscarPorCodigo(codigo, codigoCategoria);
+	public Optional<Produto> buscarPorCodigo(Long codigoCategoria, Long codigo) {
+		return produtoRepository.buscarPorCodigo(codigoCategoria, codigo);
 	}
 
 }
