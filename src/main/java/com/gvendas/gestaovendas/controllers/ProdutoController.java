@@ -18,22 +18,22 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Produto")
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("/categoria{codigoCategoria}/produto")
 public class ProdutoController {
 
 	@Autowired
 	ProdutoService produtoService;
 
-	@ApiOperation(value = "Lista todos os Produtos")
+	@ApiOperation(value = "Lista todos os Produtos por Categoria" , nickname = "")
 	@GetMapping
-	public List<Produto> findAll() {
-		return produtoService.findAll();
+	public List<Produto> findAll(@PathVariable Long codigoCategoria) {
+		return produtoService.findAll(codigoCategoria);
 	}
 
-	@ApiOperation(value = "Lista o Produto pelo ID")
-	@GetMapping("{/id}")
-	public ResponseEntity<Optional<Produto>> findById(@PathVariable Long id) {
-		Optional<Produto> produto = produtoService.findById(id);
+	@ApiOperation(value = "Lista o Produto por Codigo" , nickname = "")
+	@GetMapping("/{codigo}")
+	public ResponseEntity<Optional<Produto>> findById(@PathVariable Long codigoCategoria, @PathVariable Long codigo) {
+		Optional<Produto> produto = produtoService.buscarPorCodigo(codigoCategoria, codigo);
 		return produto.isPresent() ? ResponseEntity.ok(produto) : ResponseEntity.notFound().build();
 	}
 
