@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,19 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 		List<Error> errors = Arrays.asList(new Error(msgUser, msgDev));
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 
+	}	
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
+			WebRequest request) {
+		String msgUser = "Rescurso não encontrado.";
+		String msgDev = ex.toString();
+		List<Error> errors = Arrays.asList(new Error(msgUser, msgDev));
+		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
 	}
+	
+
 
 	// METODOS INTERNOS DE EXECUCAO E TRATAMENTOS
 	private List<Error> gerarListErrors(BindingResult bindingResult) {
