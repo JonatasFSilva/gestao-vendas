@@ -29,8 +29,8 @@ public class ProdutoService {
 		return produtoRepository.buscarPorCodigo(codigoCategoria, codigo);
 	}
 
-	public Produto save(Produto produto) {
-		validarCategoruaDoProdutoExiste(produto.getCategoria().getCodigo());
+	public Produto save(Long codigoCategoria, Produto produto) {
+		validarCategoruaDoProdutoExiste(codigoCategoria);
 		validarProdutoDuplicado(produto);
 		return produtoRepository.save(produto);
 	}
@@ -40,7 +40,7 @@ public class ProdutoService {
 		validarCategoruaDoProdutoExiste(codigoCategoria);
 		validarProdutoDuplicado(produto);
 		BeanUtils.copyProperties(produto, produtoAtualizar, "codigo");
-		
+
 		return produtoRepository.save(produtoAtualizar);
 	}
 
@@ -65,9 +65,10 @@ public class ProdutoService {
 	}
 
 	private void validarProdutoDuplicado(Produto produto) {
-		if (produtoRepository
-				.findByCategoriaCodigoAndDescricao(produto.getCategoria().getCodigo(), produto.getDescricao())
-				.isPresent()) {
+		Optional<Produto> produtoPorDescricao = produtoRepository
+				.findByCategoriaCodigoAndDescricao(produto.getCategoria().getCodigo(), produto.getDescricao());
+
+		if (produtoPorDescricao.isPresent() && produtoPorDescricao.get().getCodigo() != produto.getCodigo()) {
 			throw new RuleBusinessException(String.format("A produto %s jã esta cadastrado", produto.getDescricao()));
 
 		}

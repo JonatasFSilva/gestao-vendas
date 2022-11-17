@@ -45,8 +45,8 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Salva um Produto", nickname = "saveProduct")
 	@PostMapping
-	public ResponseEntity<Produto> save(@Valid @RequestBody Produto produto) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(produto));
+	public ResponseEntity<Produto> save(@PathVariable Long codigoCategoria, @Valid @RequestBody Produto produto) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.save(codigoCategoria, produto));
 	}
 
 	@ApiOperation(value = "Atualiza um Produto", nickname = "updateProduct")
