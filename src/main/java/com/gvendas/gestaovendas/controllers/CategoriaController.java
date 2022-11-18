@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gvendas.gestaovendas.dto.CategoriaResponseDTO;
 import com.gvendas.gestaovendas.entities.Categoria;
 import com.gvendas.gestaovendas.services.CategoriaService;
 
@@ -36,18 +38,20 @@ public class CategoriaController {
 
 	@ApiOperation(value = "Lista todas as Categorias", nickname = "findAllsCatregory")
 	@GetMapping
-	public List<Categoria> findAll() {
-		return service.findAll();
+	public List<CategoriaResponseDTO> findAll() {
+		return service.findAll().stream().map(categoria -> CategoriaResponseDTO.convertCategoriaDTO(categoria))
+				.collect(Collectors.toList());
 	}
 
 	@ApiOperation(value = "Lista uma Categoria pelo ID", nickname = "findByCategory")
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Categoria>> findById(@PathVariable Long id) {
+	public ResponseEntity<CategoriaResponseDTO> findById(@PathVariable Long id) {
 		Optional<Categoria> categoria = service.findById(id);
 		// return SE A categoria ESTA PRESENTE NO RETORNO
 		// ... ENTAO RETORNA OK (200)
 		// SENAO RETORNA NOTFOUND (404)
-		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+		return categoria.isPresent() ? ResponseEntity.ok(CategoriaResponseDTO.convertCategoriaDTO(categoria.get()))
+				: ResponseEntity.notFound().build();
 	}
 
 	@ApiOperation(value = "Salva uma nova Categoria", nickname = "saveCategory")
