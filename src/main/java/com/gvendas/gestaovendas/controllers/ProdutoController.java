@@ -2,6 +2,7 @@ package com.gvendas.gestaovendas.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gvendas.gestaovendas.dto.produto.ProdutoResponseDTO;
 import com.gvendas.gestaovendas.entities.Produto;
 import com.gvendas.gestaovendas.services.ProdutoService;
 
@@ -34,15 +36,17 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Lista todos os Produtos por Categoria", nickname = "findAllsProductsForCategory")
 	@GetMapping
-	public List<Produto> findAll(@PathVariable Long codigoCategoria) {
-		return produtoService.findAll(codigoCategoria);
+	public List<ProdutoResponseDTO> findAll(@PathVariable Long codigoCategoria) {
+		return produtoService.findAll(codigoCategoria).stream().map(ProdutoResponseDTO::convertProdutoDTO)
+				.collect(Collectors.toList());
 	}
 
 	@ApiOperation(value = "Lista o Produto por Codigo", nickname = "findByProduct")
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Optional<Produto>> findById(@PathVariable Long codigoCategoria, @PathVariable Long codigo) {
+	public ResponseEntity<ProdutoResponseDTO> findById(@PathVariable Long codigoCategoria, @PathVariable Long codigo) {
 		Optional<Produto> produto = produtoService.buscarPorCodigo(codigoCategoria, codigo);
-		return produto.isPresent() ? ResponseEntity.ok(produto) : ResponseEntity.notFound().build();
+		return produto.isPresent() ? ResponseEntity.ok(ProdutoResponseDTO.convertProdutoDTO(produto.get()))
+				: ResponseEntity.notFound().build();
 	}
 
 	@ApiOperation(value = "Salva um Produto", nickname = "saveProduct")

@@ -15,11 +15,15 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "produto")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Produto {
 
 	@Id
