@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gvendas.gestaovendas.dto.CategoriaResponseDTO;
+import com.gvendas.gestaovendas.dto.CetegoriaRequestDTO;
 import com.gvendas.gestaovendas.entities.Categoria;
 import com.gvendas.gestaovendas.services.CategoriaService;
 
@@ -39,8 +40,7 @@ public class CategoriaController {
 	@ApiOperation(value = "Lista todas as Categorias", nickname = "findAllsCatregory")
 	@GetMapping
 	public List<CategoriaResponseDTO> findAll() {
-		return service.findAll().stream().map(categoria -> CategoriaResponseDTO.convertCategoriaDTO(categoria))
-				.collect(Collectors.toList());
+		return service.findAll().stream().map(CategoriaResponseDTO::convertCategoriaDTO).collect(Collectors.toList());
 	}
 
 	@ApiOperation(value = "Lista uma Categoria pelo ID", nickname = "findByCategory")
@@ -56,15 +56,17 @@ public class CategoriaController {
 
 	@ApiOperation(value = "Salva uma nova Categoria", nickname = "saveCategory")
 	@PostMapping
-	public ResponseEntity<Categoria> save(@Valid @RequestBody Categoria categoria) throws URISyntaxException {
-		Categoria newCategoria = service.save(categoria);
-		return ResponseEntity.created(new URI("/categoria/" + newCategoria.getCodigo())).body(newCategoria);
+	public ResponseEntity<CategoriaResponseDTO> save(@Valid @RequestBody CetegoriaRequestDTO categoriaRequestDto)
+			throws URISyntaxException {
+		Categoria newCategoria = service.save(categoriaRequestDto.convertEntity());
+		return ResponseEntity.created(new URI("/categoria/" + newCategoria.getCodigo()))
+				.body(CategoriaResponseDTO.convertCategoriaDTO(newCategoria));
 	}
 
 	@ApiOperation(value = "Atualiza uma Categoria pelo ID", nickname = "updateCartegory")
 	@PutMapping("/{id}")
-	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
-		return ResponseEntity.ok(service.update(id, categoria));
+	public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody CetegoriaRequestDTO categoriaRequestDTO) {
+		return ResponseEntity.ok(service.update(id, categoriaRequestDTO.convertEntity(id)));
 	}
 
 	@ApiOperation(value = "Deleta uma Categoria", nickname = "deleteCategory")

@@ -6,15 +6,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
-import org.hibernate.validator.constraints.Length;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "categoria")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Categoria {
 
 	@Id
@@ -22,8 +23,9 @@ public class Categoria {
 	private Long codigo;
 
 	@Column(name = "nome")
-	@NotBlank(message = "Nome")
-	@Length(min =3, max =50, message = "Nome")
 	private String nome;
 
+	public Categoria(String nome) {
+		this.nome = nome;
+	}
 }

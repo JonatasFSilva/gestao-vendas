@@ -16,6 +16,7 @@ public class CategoriaResponseDTO {
 
 	@ApiModelProperty(value = "Código")
 	private Long codigo;
+
 	@ApiModelProperty(value = "Nome")
 	private String nome;
 
