@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gvendas.gestaovendas.entities.Cliente;
+import com.gvendas.gestaovendas.exceptions.RuleBusinessException;
 import com.gvendas.gestaovendas.repositories.ClienteRepository;
 
 @Service
@@ -21,6 +22,21 @@ public class ClienteService {
 
 	public Optional<Cliente> findById(Long codigo) {
 		return clienteRepository.findById(codigo);
+	}
+
+	public Cliente save(Cliente cliente) {
+		validarClienteDuplicade(cliente);
+		return clienteRepository.save(cliente);
+	}
+
+	private void validarClienteDuplicade(Cliente cliente) {
+		Cliente clientePorNome = clienteRepository.findByNome(cliente.getNome());
+
+		if (clientePorNome != null && clientePorNome.getCodigo() != cliente.getCodigo()) {
+			throw new RuleBusinessException(
+					String.format("O cliente %s ja esta cadastrado", cliente.getNome().toUpperCase()));
+		}
+
 	}
 
 }

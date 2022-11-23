@@ -5,9 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +32,7 @@ public class ClienteController {
 	@ApiOperation(value = "Lista todos os Clientes", nickname = "findAllsClient")
 	@GetMapping
 	public List<ClienteResponseDTO> findAll() {
-		return service.findAll().stream().map(client -> ClienteResponseDTO.convertClienteDTO(client))
-				.collect(Collectors.toList());
+		return service.findAll().stream().map(ClienteResponseDTO::convertClienteDTO).collect(Collectors.toList());
 	}
 
 	@ApiOperation(value = "Lista uma Categoria pelo ID", nickname = "findById")
@@ -42,5 +44,12 @@ public class ClienteController {
 		// SENAO RETORNA NOTFOUND (404)
 		return cliente.isPresent() ? ResponseEntity.ok(ClienteResponseDTO.convertClienteDTO(cliente.get()))
 				: ResponseEntity.notFound().build();
+	}
+
+	@ApiOperation(value = "Salva um novo Cliente", nickname = "saveClient")
+	@PostMapping
+	public ResponseEntity<ClienteResponseDTO> save(@RequestBody Cliente cliente) {
+		Cliente save = service.save(cliente);
+		return ResponseEntity.status(HttpStatus.CREATED).body(ClienteResponseDTO.convertClienteDTO(save));
 	}
 }
