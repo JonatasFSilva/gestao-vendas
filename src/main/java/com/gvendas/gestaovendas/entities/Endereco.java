@@ -5,12 +5,14 @@ import javax.persistence.Embeddable;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Embeddable
 @Setter
 @Getter
 @EqualsAndHashCode
+@NoArgsConstructor
 public class Endereco {
 
 	@Column(name = "logradouro")
@@ -33,5 +35,18 @@ public class Endereco {
 
 	@Column(name = "estado")
 	private String estado;
+
+	public Endereco(String logradouro, Integer numero, String complemento, String bairro, String cep, String cidade,
+			String estado) {
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.cidade = cidade;
+		this.estado = estado;
+	}
+	
+	
 
 }

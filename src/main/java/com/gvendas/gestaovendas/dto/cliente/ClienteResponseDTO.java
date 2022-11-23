@@ -26,6 +26,7 @@ public class ClienteResponseDTO {
 	@ApiModelProperty(value = "Ativo")
 	private Boolean ativo;
 
+	@ApiModelProperty(value = "Endereço")
 	private EnderecoResponseDTO enderecoResponseDTO;
 
 	public static ClienteResponseDTO convertClienteDTO(Cliente cliente) {

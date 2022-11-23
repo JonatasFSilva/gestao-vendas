@@ -10,12 +10,14 @@ import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "cliente")
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode
 public class Cliente {
 
@@ -35,5 +37,12 @@ public class Cliente {
 
 	@Embedded
 	private Endereco endereco;
+
+	public Cliente(String nome, String telefone, Boolean ativo, Endereco endereco) {
+		this.nome = nome;
+		this.telefone = telefone;
+		this.ativo = ativo;
+		this.endereco = endereco;
+	}
 
 }
