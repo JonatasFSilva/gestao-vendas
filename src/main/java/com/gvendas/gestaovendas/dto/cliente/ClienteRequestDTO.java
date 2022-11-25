@@ -40,6 +40,15 @@ public class ClienteRequestDTO {
 	@NotNull(message = "Endereço")
 	@Valid
 	private EnderecoRequestDTO endereco;
+	
+	public Cliente convertEntity(Long codigo) {
+
+		Endereco enderecoSave = new Endereco(endereco.getLogradouro(), endereco.getNumero(), endereco.getComplemento(),
+				endereco.getBairro(), endereco.getCep(), endereco.getCidade(), endereco.getEstado());
+
+		return new Cliente(codigo, nome, telefone, ativo, enderecoSave);
+	}
+	
 
 	public Cliente convertEntity() {
 
