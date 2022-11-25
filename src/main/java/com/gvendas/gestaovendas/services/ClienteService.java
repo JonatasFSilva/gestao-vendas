@@ -39,6 +39,12 @@ public class ClienteService {
 
 	}
 
+	public void delete(Long codigo) {
+		clienteRepository.deleteById(codigo);
+	}
+
+	// METDODS DE VALIDACAO
+
 	private Cliente validarClienteExite(Long codigo) {
 		Optional<Cliente> cliente = findById(codigo);
 
